@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     SeekBar advanceSeekBar;
     TextView txtlyrics;
 
-    int a = 8;
+    int a = 0;
 
     protected MediaPlayer mediaPlayer = new MediaPlayer();
     AudioManager audioManager;
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String lyricsHymn = "HYMN FOR THE WEEKEND\n\n\n\n\n\nOh, angel sent from up above\n You know you make my world light up When I was down, when I was hurt You came to lift me up Life is a drink, and love's a drug Oh, now I think I must be miles up When I was a river, dried up You came to rain a flood\n\nAnd said drink from me, drink from me When I was so thirsty Pour on a symphony Now I just can't get enough Put your wings on me, wings on me When I was so heavy Pour on a symphony When I'm low, low, low, low\n\n\nI, oh, I, oh, I Got me feeling drunk and high So high, so high Oh, I, oh, I, oh, I Now I'm feeling drunk and high So high, so high\n\n\n\nOh, angel sent from up above I feel it coursing through my blood Life is a drink, your love's about To make the stars come out\n\n Put your wings on me, wings on me When I was so heavy Pour on a symphony When I'm low, low, low, low\n\n\nI, oh, I, oh, I Got me feeling drunk and high So high, so high Oh I, oh, I, oh, I I'm feeling drunk and high So high, so high x2\nThen we'll shoot across the sky x8";
 
     public void playClicked(View view){
-        cambiarLetra();
         if(a != 8) {
             if (sonando()) {
                 mediaPlayer.pause();
@@ -127,11 +126,19 @@ public class MainActivity extends AppCompatActivity {
 
         audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
+        cambiarCancion();
+
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         volumeSeekBar.setMax(maxVolume);
         volumeSeekBar.setProgress(currentVolume);
+
+        int duration = mediaPlayer.getDuration();
+        int progress = mediaPlayer.getCurrentPosition();
+
+        advanceSeekBar.setMax(duration);
+        advanceSeekBar.setProgress(progress);
 
         volumeSeekBar.getProgressDrawable().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         volumeSeekBar.getThumb().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
@@ -143,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,i,0);
-                //mediaPlayer.seekTo(i);
             }
 
             @Override
@@ -156,6 +162,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        advanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mediaPlayer.seekTo(advanceSeekBar.getProgress());
+                actualizar();
+            }
+        });
+
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -166,18 +191,13 @@ public class MainActivity extends AppCompatActivity {
         canciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //Toast.makeText(getApplicationContext(), canciones.get(i), Toast.LENGTH_SHORT).show();
                 if(sonando()){
                     mediaPlayer.stop();
                 }
                 a = i;
                 Log.d("Cancion",Integer.toString(a));
                 cambiarCancion();
-                int duration = mediaPlayer.getDuration();
-                int progress = mediaPlayer.getCurrentPosition();
-
-                advanceSeekBar.setMax(duration);
-                advanceSeekBar.setProgress(progress);
+                cambiarLetra();
             }
 
         });
@@ -225,34 +245,42 @@ public class MainActivity extends AppCompatActivity {
     }
     public void cambiarLetra(){
         if(a == 0) {
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsToday);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
         else if(a == 1){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsMusicaLigera);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
         else if(a == 2){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsAlltheSmallThings);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
         else if(a == 3){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsStressedOut);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
         else if(a == 4){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsSugar);
             txtlyrics.animate().translationYBy(-2000f).setDuration(150000);
         }
         else if(a == 5){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsStarboy);
             txtlyrics.animate().translationYBy(-2000f).setDuration(200000);
         }
         else if(a == 6){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsDemons);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
         else if(a == 7){
+            txtlyrics.setY(0);
             txtlyrics.setText(lyricsHymn);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
@@ -263,6 +291,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("No ha puesto", "ninguna canción");
         }
     }
-
-
+    public void actualizar(){
+        int e = advanceSeekBar.getProgress();
+        Log.d("Progress:", Integer.toString(e));
+        txtlyrics.animate().translationYBy(-500f).setDuration(e/10);
+    }
 }
