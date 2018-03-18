@@ -63,9 +63,11 @@ public class MainActivity extends AppCompatActivity {
             if (sonando()) {
                 mediaPlayer.pause();
                 boton.setBackground(play);
+                txtlyrics.animate().cancel();
             } else {
                 boton.setBackground(pause);
                 mediaPlayer.start();
+                actualizar();
             }
         }
     }
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
             cambiarCancion();
             cambiarLetra();
+            boton.setBackground(pause);
             mediaPlayer.start();
         }
 
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
             cambiarCancion();
             cambiarLetra();
+            boton.setBackground(pause);
             mediaPlayer.start();
         }
     }
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     mediaPlayer.stop();
                 }
                 a = i;
-                Log.d("Cancion",Integer.toString(a));
+                //Log.d("Cancion",Integer.toString(a));
                 cambiarCancion();
                 cambiarLetra();
             }
@@ -293,7 +297,52 @@ public class MainActivity extends AppCompatActivity {
     }
     public void actualizar(){
         int e = advanceSeekBar.getProgress();
-        Log.d("Progress:", Integer.toString(e));
-        txtlyrics.animate().translationYBy(-500f).setDuration(e/10);
+        //Log.d("Progress:", Integer.toString(e));
+        //float y = txtlyrics.getY();
+        //Log.d("Y:", Float.toString(y));
+        double moverY = e * - 0.01;
+        float moverYf = (float) moverY;
+        //int moverY = (((e*2)/10000) -2)*-1;
+        //txtlyrics.animate().translationYBy(-500f).setDuration(e/10);
+        if(a == 0) {
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
+        else if(a == 1){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
+        else if(a == 2){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
+        else if(a == 3){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
+        else if(a == 4){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-2000f).setDuration(150000);
+        }
+        else if(a == 5){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-2000f).setDuration(200000);
+        }
+        else if(a == 6){
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
+        else{
+            txtlyrics.animate().cancel();
+            txtlyrics.setY(moverYf);
+            txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
+        }
     }
 }
