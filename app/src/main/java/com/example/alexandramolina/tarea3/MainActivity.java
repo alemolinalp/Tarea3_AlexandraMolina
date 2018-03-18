@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,6 +20,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.widget.TextView;
 
+
+/*Estudiante: Alexandra Molina Alpízar
+Carnet: 2015071320*/
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Musica> arraylist;
@@ -344,5 +348,19 @@ public class MainActivity extends AppCompatActivity {
             txtlyrics.setY(moverYf);
             txtlyrics.animate().translationYBy(-1000f).setDuration(150000);
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            int ind = volumeSeekBar.getProgress();
+            volumeSeekBar.setProgress(ind + 1);
+            return true;
+        }
+        else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
+            int ind = volumeSeekBar.getProgress();
+            volumeSeekBar.setProgress(ind - 1);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
